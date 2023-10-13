@@ -1,113 +1,69 @@
-import Image from 'next/image'
+'use client';
+import ExperienceCard from "@/app/components/Card";
+import Nav from "@/app/components/Nav";
+import Form from "@/app/components/Form";
+import Footer from "@/app/components/Footer";
+import data from "@/app/data/data";
+import {useState} from "react";
+import BarChart from "@/app/components/BarChart";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    const [experienceData, setExperienceData] = useState(data);
+    const handleLikeClick = (id: number) => {
+        // Find the individual by their ID and update the likes
+        setExperienceData((prevExperienceData) =>
+            prevExperienceData.map((individual) =>
+                individual.id === id
+                    ? { ...individual, likes: individual.likes + 1 }
+                    : individual
+            )
+        );
+    };
+    return (
+        <div className="min-h-screen flex flex-col">
+            <div className="sticky top-0 z-10 bg-white">
+                <Nav />
+            </div>
+
+            <main className="flex bg-gray-100 flex-col items-center justify-center flex-1 overflow-y-auto">
+                <h2 className={"text-slate-900 mt-16 text-5xl font-bold"}>Success Stories</h2>
+                <p className={"my-8 mx-4 text-center text-xl"}>A2SV has turned the dreams of African software engineers into a reality and continues to thrive.</p>
+
+                <p className={"mt-20 mx-4 text-center text-sm"}>  Google SWE Interviews Acceptance Rate Comparison</p>
+                <p className={"mx-4 text-center text-lg"}>  A2SV students are 35 times more likely to pass Google SWE interviews than average candidates.</p>
+                    <BarChart/>
+
+                <h2 className={"text-slate-900 mt-16 text-5xl font-bold"}>Impact Stories</h2>
+                <p className={"mt-4 mx-4 text-center text-lg"}>  Behind every success is a story. Learn about the stories of A2SVians.</p>
+                {experienceData.map((individual) => (
+                    <ExperienceCard
+                        key={individual.id}
+                        name={individual.name}
+                        jobTitle={individual.role}
+                        company={individual.place}
+                        experienceText={individual.details[0].detail}
+                        currentRoleText={individual.details[1].detail}
+                        lifeChangeText={individual.details[2].detail}
+                        imageUrl={individual.img}
+                        likes={individual.likes}
+                        onLikeClick={() => handleLikeClick(individual.id)}
+                    />
+                ))}
+                <Form/>
+                <Footer/>
+                <div className={"bg-slate-300 h-[1px] w-[85%] my-8"}> </div>
+                <div className="v-card__text my-8">
+                    © Copyright 2023 <strong> A2SV Foundation </strong>. All rights reserved.
+                    <a href="/privacy-policy" className="text-decoration-none text-blue-500">
+                        Privacy Policy
+                    </a>
+                    <span> | </span>
+                    <a href="/cookie-policy" className="text-decoration-none text-blue-500 ">
+                          Cookie Policy
+                    </a>
+                </div>
+
+            </main>
         </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    );
 }
